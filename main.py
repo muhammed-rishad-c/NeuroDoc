@@ -1,15 +1,18 @@
-from src.components.text_extract import extract_text_from_pdf,chuck_text_by_paragraph
-from src.components.vectorization_storage import create_faiss_index,get_sentence_embedding
+from src.components.storage_manager import get_faiss_data
+from src.components.Q_and_A import find_similar_chunks,generating_answer
 
 
 if __name__=="__main__":
-    text=extract_text_from_pdf("data/TheLittlePrince.pdf")
-    #print(text)
-    chunks=chuck_text_by_paragraph(text)
-    model,embedding=get_sentence_embedding(chunks)
     
-    #print(embedding)
-    index=create_faiss_index(embedding)
-    print(index)
+    
+    
+    query="What is the primary difference between problem-solving agents and planning agents?"
+    
+    indices=find_similar_chunks(query=query)
+    answer=generating_answer(query=query,indices=indices)
+    print(f"this is answer ",answer)
+    
+    
+    
     
     
