@@ -10,7 +10,6 @@ except LookupError:
     nltk.download('punkt')
 
 def extract_text_from_pdf(pdf_path):
-    """IMPROVED: Better PDF text extraction with cleaning"""
     try:
         doc = fitz.open(pdf_path)
         text = ""
@@ -31,7 +30,6 @@ def extract_text_from_pdf(pdf_path):
         raise
 
 def clean_pdf_text(text):
-    """Clean common PDF text extraction artifacts"""
     if not text:
         return ""
     
@@ -49,31 +47,7 @@ def clean_pdf_text(text):
     
     return text.strip()
 
-def chunk_text_by_paragraph(text, chunk_size=1000, chunk_overlap=200):
-    """IMPROVED: Your original function with better parameters"""
-    if not text.strip():
-        return []
-    
-    text = re.sub(r'\s+', ' ', text.strip())
-    
-    words = text.split()
-    
-    if len(words) <= chunk_size:
-        return [text]
-    
-    chunks = []
-    
-    for i in range(0, len(words), chunk_size - chunk_overlap):
-        chunk_words = words[i:i + chunk_size]
-        chunk = " ".join(chunk_words)
-        
-        if chunk.strip():
-            chunks.append(chunk.strip())
-        
-        if i + chunk_size >= len(words):
-            break
-    
-    return chunks
+
 
 def chunk_text_by_sentences(text, max_chunk_size=800, overlap_sentences=2):
     """NEW: Better chunking using sentence boundaries"""
