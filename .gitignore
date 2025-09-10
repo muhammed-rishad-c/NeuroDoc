@@ -1,1 +1,49 @@
+# 🐍 Python virtual environment
 venv/
+ENV/
+env/
+.venv/
+
+# 📦 Python package artifacts
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.manifest
+*.spec
+
+# 📁 FAISS index and other large binary files
+*.faiss
+*.h5
+*.pkl
+*.joblib
+*.npy
+*.npz
+*.pt
+*.ckpt
+
+# 📄 Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+*.DS_Store
+
+# 📊 Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# 🔧 IDE/editor configs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# 📚 Dependency files (already tracked)
+requirement.txt
+
+# 🚫 System files
+Thumbs.db
+desktop.ini
