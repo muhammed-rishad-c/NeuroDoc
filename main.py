@@ -6,7 +6,7 @@ if __name__=="__main__":
     
     
     
-    query="What is the primary difference between problem-solving agents and planning agents?"
+    query="What is breadth first search"
     
     indices=find_similar_chunks(query=query)
     answer=generating_answer(query=query,indices=indices)

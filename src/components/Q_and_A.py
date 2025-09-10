@@ -11,37 +11,24 @@ except FileNotFoundError as e:
     print(e)
     index, model, chunks = None, None, None
 
-def find_similar_chunks(query, k=5):
-    """
-    Finds the top k most similar chunks to a given query using the loaded index.
-    """
-    if model is None or index is None:
-        raise RuntimeError("FAISS index or model not loaded. Please run the training script first.")
-        
+def find_similar_chunks(query, k=5, min_score=0.3):
     query_embedding = model.encode([query]).astype('float32')
+    distances, indices = index.search(query_embedding, k*2)
+
+    valid_indices = []
+    for i, distance in enumerate(distances[0]):
+        if distance >= min_score: 
+            valid_indices.append(indices[0][i])
     
-    distances, indices = index.search(query_embedding, k)
-    
-    return indices
+    return np.array([valid_indices[:k]])
 
 def generating_answer(query, indices):
-    """
-    Generates an answer from a query and relevant text chunks.
-    """
-    if chunks is None:
-        raise RuntimeError("Text chunks not loaded. Please run the training script first.")
-        
     relevant_chunks = [chunks[i] for i in indices[0]]
-    
-    # Filter out empty chunks before joining
     context = " ".join([chunk for chunk in relevant_chunks if chunk.strip()])
-    
-    # Use a more robust QA model for better performance
-    qa_pipeline = pipeline("question-answering", model="deepset/roberta-base-squad2")
-    
-    # The pipeline returns a dictionary with the answer
-    # This is the corrected line where the question and context are passed
-    result = qa_pipeline(question=query, context=context)
-    
+ 
+    qa_pipeline = pipeline("question-answering", 
+                          model="microsoft/DialoGPT-medium") 
+   
+    result = qa_pipeline(question=query, context=context[:4000])  
     return result['answer']
 
